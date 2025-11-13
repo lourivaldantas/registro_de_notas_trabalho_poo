@@ -35,6 +35,9 @@ export class GradeRecord {
 
         const b1 = this._bimesterAverages[0]!
         const b2 = this._bimesterAverages[1]!
+
+        if (b1 == null || b2 == null) return
+
         this._midtermAverage = Math.round((b1 * 2 + b2 * 3) / 5)
 
         if (this._midtermAverage >= 60) {
