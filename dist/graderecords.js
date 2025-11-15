@@ -1,24 +1,18 @@
+import { Student } from './student.js';
 import { Status } from './enum.js';
 export class GradeRecord {
-    _studentName;
-    _studentId;
+    _student;
     _bimesterAverages;
     _midtermAverage;
     _status;
     _finalAverage;
-    constructor(_studentName, _studentId, _bimesterAverages = [], _midtermAverage, _status = Status.ENROLLED, _finalAverage) {
-        this._studentName = _studentName;
-        this._studentId = _studentId;
+    constructor(_student, _bimesterAverages = [], _midtermAverage, _status = Status.ENROLLED, _finalAverage) {
+        this._student = _student;
         this._bimesterAverages = _bimesterAverages;
         this._midtermAverage = _midtermAverage;
         this._status = _status;
         this._finalAverage = _finalAverage;
     }
-    // Getters e Setters
-    set studentName(value) { this._studentName = value; }
-    get studentName() { return this._studentName; }
-    set studentId(value) { this._studentId = value; }
-    get studentId() { return this._studentId; }
     addBimesterAverages(b1, b2) {
         const valid = [b1, b2].every(n => Number.isFinite(n) && n >= 0 && n <= 100);
         if (!valid)
@@ -29,15 +23,16 @@ export class GradeRecord {
     get bimesterAverages() { return [...this._bimesterAverages]; }
     // Cálculos de médias
     calculateMidtermAverage() {
-        if (this._bimesterAverages.length < 2) {
+        if (this._bimesterAverages.length < 2)
             return;
-        }
         const b1 = this._bimesterAverages[0];
         const b2 = this._bimesterAverages[1];
+        if (b1 == null || b2 == null)
+            return;
         this._midtermAverage = Math.round((b1 * 2 + b2 * 3) / 5);
         if (this._midtermAverage >= 60) {
             this._status = Status.PASSED;
-            this._finalAverage = this._midtermAverage;
+            this._finalAverage = undefined;
         }
         else if (this._midtermAverage <= 10) {
             this._status = Status.FAILED;
@@ -56,4 +51,5 @@ export class GradeRecord {
         }
     }
     get finalAverage() { return this._finalAverage; }
+    get student() { return this._student; }
 }

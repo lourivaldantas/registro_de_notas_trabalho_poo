@@ -1,24 +1,25 @@
-import { Course, Shift, Program } from './enum.js';
+import { Shift, Program } from './enum.js';
+import { Course } from './course.js';
 import { GradeRecord } from './graderecords.js';
+import { Teacther } from './teatcher.js';
 export class Logbook {
     _course;
-    _teacher;
     _shift;
     _program;
     _classCode;
+    _teacher;
     _gradeRecords;
-    constructor(_course, _teacher, _shift, _program, _classCode, _gradeRecords = []) {
+    constructor(_course, _shift, _program, _classCode, _teacher, _gradeRecords = []) {
         this._course = _course;
-        this._teacher = _teacher;
         this._shift = _shift;
         this._program = _program;
         this._classCode = _classCode;
+        this._teacher = _teacher;
         this._gradeRecords = _gradeRecords;
     }
     // Getters e Setters
     set course(value) { this._course = value; }
     get course() { return this._course; }
-    set teacher(value) { this._teacher = value; }
     get teacher() { return this._teacher; }
     set shift(value) { this._shift = value; }
     get shift() { return this._shift; }
@@ -28,7 +29,7 @@ export class Logbook {
     get classCode() { return this._classCode; }
     // Grade Records
     addGradeRecord(record) {
-        const exist = this._gradeRecords.some(student => student.studentId === record.studentId);
+        const exist = this._gradeRecords.some(stdnt => stdnt.student.studentId === record.student.studentId);
         if (exist)
             return false;
         this._gradeRecords.push(record);
@@ -36,6 +37,13 @@ export class Logbook {
     }
     get gradeRecords() { return [...this._gradeRecords]; }
     findGradeRecordByStudentId(id) {
-        return this._gradeRecords.find(student => student.studentId === id);
+        return this._gradeRecords.find(student => student.student.studentId === id);
+    }
+    addTeacher(tchr) {
+        const exist = this._course.teachers.some(prof => prof.teacherId === tchr.teacherId);
+        if (exist)
+            return false;
+        this._teacher = tchr;
+        return true;
     }
 }
